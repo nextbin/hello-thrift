@@ -1,12 +1,12 @@
-package com.nextbin.hello.facebook.swift.client;
+package com.nextbin.hello.thrift.client;
 
 import com.facebook.nifty.client.FramedClientConnector;
 import com.facebook.swift.service.ThriftClientManager;
-import com.nextbin.hello.facebook.swift.service.HelloService;
+import com.google.common.net.HostAndPort;
+import com.nextbin.hello.thrift.inf.service.HelloService;
 
 import java.util.concurrent.ExecutionException;
 
-import static com.google.common.net.HostAndPort.fromParts;
 
 /**
  * @author zebin
@@ -31,7 +31,7 @@ public class HelloServiceClient {
     public static HelloService getService() throws ExecutionException, InterruptedException {
         ThriftClientManager clientManager = new ThriftClientManager();
         return clientManager.createClient(
-                new FramedClientConnector(fromParts("localhost", 12345)),
+                new FramedClientConnector(HostAndPort.fromParts("localhost", 12345)),
                 HelloService.class).get();
     }
 }

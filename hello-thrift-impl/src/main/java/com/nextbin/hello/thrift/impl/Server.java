@@ -1,4 +1,4 @@
-package com.nextbin.hello.facebook.swift;
+package com.nextbin.hello.thrift.impl;
 
 import com.facebook.nifty.core.NettyServerConfig;
 import com.facebook.nifty.core.ThriftServerDef;
@@ -7,7 +7,7 @@ import com.facebook.swift.service.ThriftEventHandler;
 import com.facebook.swift.service.ThriftServer;
 import com.facebook.swift.service.ThriftServiceProcessor;
 import com.google.common.collect.ImmutableList;
-import com.nextbin.hello.facebook.swift.service.impl.HelloServiceImpl;
+import com.nextbin.hello.thrift.impl.service.impl.HelloServiceImpl;
 
 import java.util.concurrent.ExecutorService;
 

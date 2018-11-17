@@ -1,4 +1,4 @@
-package com.nextbin.hello.facebook.swift.bean;
+package com.nextbin.hello.thrift.inf.bean;
 
 import com.facebook.swift.codec.ThriftField;
 import com.facebook.swift.codec.ThriftStruct;

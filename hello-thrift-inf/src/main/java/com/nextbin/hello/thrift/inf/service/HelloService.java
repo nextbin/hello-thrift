@@ -1,11 +1,11 @@
-package com.nextbin.hello.facebook.swift.service;
+package com.nextbin.hello.thrift.inf.service;
 
 import com.facebook.swift.service.ThriftException;
 import com.facebook.swift.service.ThriftMethod;
 import com.facebook.swift.service.ThriftService;
-import com.nextbin.hello.facebook.swift.bean.Paging;
-import com.nextbin.hello.facebook.swift.bean.User;
-import com.nextbin.hello.facebook.swift.exception.ServiceException;
+import com.nextbin.hello.thrift.inf.bean.Paging;
+import com.nextbin.hello.thrift.inf.bean.User;
+import com.nextbin.hello.thrift.inf.exception.ServiceException;
 
 import java.util.List;
 
