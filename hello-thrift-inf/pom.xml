@@ -11,4 +11,13 @@
 
     <artifactId>hello-thrift-inf</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.facebook.swift</groupId>
+            <artifactId>swift2thrift-generator-cli</artifactId>
+            <version>${swift.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 </project>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.nextbin.hello</groupId>
+    <artifactId>hello-thrift-client2</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>hello-thrift-client2</name>
+    <description>Thrift Client without hello-thrift-inf</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <swift.version>0.23.1</swift.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.facebook.swift</groupId>
+            <artifactId>swift-service</artifactId>
+            <version>${swift.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.facebook.mojo</groupId>
+                <artifactId>swift-maven-plugin</artifactId>
+                <version>${swift.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>false</skip>
+                    <idlFiles>
+                        <directory>${project.basedir}/src/main/resources/</directory>
+                        <includes>
+                            <include>**/*.thrift</include>
+                        </includes>
+                        <!--<excludes>-->
+                        <!--<exclude>**/other.thrift</exclude>-->
+                        <!--</excludes>-->
+                    </idlFiles>
+                    <defaultPackage>${project.groupId}.thrift.swift</defaultPackage>
+                    <outputFolder>${project.basedir}/src/main/java/</outputFolder>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>

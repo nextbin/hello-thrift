@@ -1,33 +1,24 @@
-package com.nextbin.hello.thrift.client;
+package com.nextbin.hello.thrift.client2;
 
 import com.facebook.nifty.client.FramedClientConnector;
 import com.facebook.swift.service.ThriftClientManager;
 import com.google.common.net.HostAndPort;
 import com.nextbin.hello.thrift.inf.service.HelloService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.thrift.TException;
 
 import java.util.concurrent.ExecutionException;
 
-
 /**
  * @author zebin
- * @since 2018-10-02.
+ * @since 2018-12-02.
  */
 @Slf4j
 public class HelloServiceClient {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws TException, ExecutionException, InterruptedException {
         HelloService helloService = getService();
         log.info(helloService.hello());
         log.info("users: {}", helloService.getUsers(1, 1));
-//        int max = 100000;
-//        Long start = System.currentTimeMillis();
-//        for (int i = 0; i < max; i++) {
-//            helloService.hello();
-//        }
-//        Long end = System.currentTimeMillis();
-//        Long elapse = end - start;
-//        int perform = Double.valueOf(max / (elapse / 1000d)).intValue();
-//        System.out.print("thrift " + max + " 次RPC调用，耗时：" + elapse + "毫秒，平均" + perform + "次/秒");
     }
 
     public static HelloService getService() throws ExecutionException, InterruptedException {

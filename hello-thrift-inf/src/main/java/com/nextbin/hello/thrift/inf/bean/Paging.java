@@ -31,7 +31,7 @@ public class Paging<T> {
         return pageSize;
     }
 
-    @ThriftField(4)
+    @ThriftField(value = 4, name = "list0")
     public T getList() {
         return list;
     }

@@ -22,7 +22,7 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public void exception() throws ServiceException {
+    public void exp() throws ServiceException {
         throw new ServiceException();
     }
 
@@ -32,7 +32,17 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public List<Paging<User>> getUsers(int pageNo, int pageSize) {
+    public List<User> getUsers(int pageNo, int pageSize) {
         return new LinkedList<>();
+    }
+
+    @Override
+    public List<Paging<User>> error1(int pageNo, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public List<Paging<Long>> error2(int pageNo, int pageSize) {
+        return null;
     }
 }

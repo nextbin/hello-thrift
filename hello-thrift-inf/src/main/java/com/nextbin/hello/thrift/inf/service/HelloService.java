@@ -1,5 +1,6 @@
 package com.nextbin.hello.thrift.inf.service;
 
+import com.facebook.swift.codec.ThriftField;
 import com.facebook.swift.service.ThriftException;
 import com.facebook.swift.service.ThriftMethod;
 import com.facebook.swift.service.ThriftService;
@@ -20,11 +21,28 @@ public interface HelloService {
     String hello();
 
     @ThriftMethod(exception = {@ThriftException(id = 1, type = ServiceException.class)})
-    void exception() throws ServiceException;
+    void exp() throws ServiceException;
 
     @ThriftMethod
-    int sum(Integer a, Integer b);
+    int sum(@ThriftField(value = 1, name = "a") Integer a,
+            @ThriftField(value = 2, name = "b") Integer b);
 
     @ThriftMethod
-    List<Paging<User>> getUsers(int pageNo, int pageSize);
+    List<User> getUsers(
+            @ThriftField(value = 1, name = "pageNo") int pageNo,
+            @ThriftField(value = 2, name = "pageSize") int pageSize);
+
+
+    // ==================  不支持泛型，下列方法为错误示例  ==================
+
+    @ThriftMethod
+    List<Paging<User>> error1(
+            @ThriftField(value = 1, name = "pageNo") int pageNo,
+            @ThriftField(value = 2, name = "pageSize") int pageSize);
+
+    @ThriftMethod
+    List<Paging<Long>> error2(
+            @ThriftField(value = 1, name = "pageNo") int pageNo,
+            @ThriftField(value = 2, name = "pageSize") int pageSize);
+
 }
