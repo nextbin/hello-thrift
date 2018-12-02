@@ -55,7 +55,7 @@
 参见：
 
 1. https://www.cnblogs.com/yjmyzz/p/thrift-swift-sample.html
-2. idea操作的博客（TODO）
+2. ![image-20181202220344735](doc/images/image-20181202220344735.png)
 
 注意事项：
 
