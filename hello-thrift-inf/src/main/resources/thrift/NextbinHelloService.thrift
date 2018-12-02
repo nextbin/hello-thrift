@@ -22,7 +22,7 @@ service HelloService {
   list<Paging> error1(1:  i32 pageNo, 2:  i32 pageSize);
   list<Paging> error2(1:  i32 pageNo, 2:  i32 pageSize);
   void exp() throws (1: ServiceException ex1);
-  list<User> getUsers(1:  i32 pageNo, 2:  i32 pageSize);
+  list<User> getUsers(1: optional i32 pageNo, 2: optional i32 pageSize);
   string hello();
   i32 sum(1:  i32 a, 2:  i32 b);
 }

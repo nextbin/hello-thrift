@@ -33,8 +33,8 @@ public interface HelloService
 
         @ThriftMethod(value = "getUsers")
         ListenableFuture<List<User>> getUsers(
-            @ThriftField(value=1, name="pageNo", requiredness=Requiredness.NONE) final int pageNo,
-            @ThriftField(value=2, name="pageSize", requiredness=Requiredness.NONE) final int pageSize
+            @ThriftField(value=1, name="pageNo", requiredness=Requiredness.OPTIONAL) final Integer pageNo,
+            @ThriftField(value=2, name="pageSize", requiredness=Requiredness.OPTIONAL) final Integer pageSize
         );
 
         @ThriftMethod(value = "hello")
@@ -66,8 +66,8 @@ public interface HelloService
 
     @ThriftMethod(value = "getUsers")
     List<User> getUsers(
-        @ThriftField(value=1, name="pageNo", requiredness=Requiredness.NONE) final int pageNo,
-        @ThriftField(value=2, name="pageSize", requiredness=Requiredness.NONE) final int pageSize
+        @ThriftField(value=1, name="pageNo", requiredness=Requiredness.OPTIONAL) final Integer pageNo,
+        @ThriftField(value=2, name="pageSize", requiredness=Requiredness.OPTIONAL) final Integer pageSize
     ) throws org.apache.thrift.TException;
 
     @ThriftMethod(value = "hello")

@@ -27,7 +27,7 @@ public class HelloServiceImpl implements HelloService {
     }
 
     @Override
-    public int sum(Integer a, Integer b) {
+    public int sum(int a, int b) {
         return a + b;
     }
 
