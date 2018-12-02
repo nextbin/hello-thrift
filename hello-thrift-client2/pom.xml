@@ -67,7 +67,7 @@
                 <configuration>
                     <skip>false</skip>
                     <idlFiles>
-                        <directory>${project.basedir}/src/main/resources/</directory>
+                        <directory>${project.basedir}/src/main/thrift/</directory>
                         <includes>
                             <include>**/*.thrift</include>
                         </includes>
