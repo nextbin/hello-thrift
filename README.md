@@ -55,7 +55,7 @@
 参见：
 
 1. https://www.cnblogs.com/yjmyzz/p/thrift-swift-sample.html
-2. https://github.com/nextbin/hello-thrift/doc/images/image-20181202220344735.png
+2. doc/images/image-20181202220344735.png
 
 注意事项：
 
