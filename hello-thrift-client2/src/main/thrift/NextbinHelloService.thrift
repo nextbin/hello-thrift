@@ -1,5 +1,6 @@
 namespace java.swift com.nextbin.hello.thrift.inf.service
 namespace java com.nextbin.hello.thrift.inf
+namespace py nextbin.hello
 
 
 

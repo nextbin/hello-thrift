@@ -33,6 +33,9 @@ public class Swift2ThriftGenerator {
         list.add("-namespace");
         list.add("java");
         list.add(PACKAGE_NAME);
+        list.add("-namespace");
+        list.add("py");
+        list.add("nextbin.hello");
         list.add("-out");
         list.add(OUT_FILE);
         list.add("-recursive");
