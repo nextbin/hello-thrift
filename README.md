@@ -28,7 +28,7 @@
 
    2. Java Swift转Thrift，Thrift转Java Swift
 
-   3. Java Swift转Thrift，Thrift转Python（TODO）
+   3. Java Swift转Thrift，Thrift转Python
 
    4. Java Swift转Thrift，Thrift转Go（TODO）
 
@@ -65,9 +65,23 @@
 
 
 
+## Thrift To Python3 Thrift
+
+参见：
+
+1. http://thrift.apache.org/tutorial/py
+2. hello-thrift-client2/requirements.txt
+
+注意事项：
+
+1. 尽量使用与服务端版本一致的python thrift
+
+
+
 ## 参考
 
 1. https://github.com/facebookarchive/swift
 2. https://www.cnblogs.com/yjmyzz/p/thrift-swift-sample.html
 3. https://blog.csdn.net/qq_25788637/article/details/79503964
 
+4. http://thrift.apache.org/tutorial/py
