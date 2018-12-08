@@ -30,7 +30,7 @@
 
    3. Java Swift转Thrift，Thrift转Python
 
-   4. Java Swift转Thrift，Thrift转Go（TODO）
+   4. ~~Java Swift转Thrift，Thrift转Go~~
 
 4. TODO
 
