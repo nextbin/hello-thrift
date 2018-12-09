@@ -38,7 +38,7 @@
 
 4. TODO
 
-## Java Swift To Thrift
+## Java To Thrift
 
 参见：
 
@@ -54,7 +54,7 @@
 6. 封装类型（如Integer、Long、User）传参变量可为null需要在@ThriftField注解中设置requiredness = ThriftField.Requiredness.OPTIONAL
 7. 不可使用泛型
 
-## Thrift To Java Swift
+## Thrift To Java
 
 参见：
 
@@ -70,7 +70,7 @@
 
 
 
-## Thrift To Python3 Thrift
+## Thrift To Python
 
 参见：
 
