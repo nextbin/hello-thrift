@@ -1,7 +1,7 @@
 package com.nextbin.hello.thrift.inf.bean;
 
-import com.facebook.swift.codec.ThriftField;
-import com.facebook.swift.codec.ThriftStruct;
+import io.airlift.drift.annotations.ThriftField;
+import io.airlift.drift.annotations.ThriftStruct;
 import lombok.Setter;
 
 /**

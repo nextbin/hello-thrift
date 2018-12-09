@@ -1,12 +1,12 @@
 package com.nextbin.hello.thrift.inf.service;
 
-import com.facebook.swift.codec.ThriftField;
-import com.facebook.swift.service.ThriftException;
-import com.facebook.swift.service.ThriftMethod;
-import com.facebook.swift.service.ThriftService;
 import com.nextbin.hello.thrift.inf.bean.Paging;
 import com.nextbin.hello.thrift.inf.bean.User;
 import com.nextbin.hello.thrift.inf.exception.ServiceException;
+import io.airlift.drift.annotations.ThriftException;
+import io.airlift.drift.annotations.ThriftField;
+import io.airlift.drift.annotations.ThriftMethod;
+import io.airlift.drift.annotations.ThriftService;
 
 import java.util.List;
 

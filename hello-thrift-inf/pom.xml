@@ -13,10 +13,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.facebook.swift</groupId>
-            <artifactId>swift2thrift-generator-cli</artifactId>
-            <version>${swift.version}</version>
-            <scope>compile</scope>
+            <groupId>io.airlift.drift</groupId>
+            <artifactId>drift-idl-generator</artifactId>
+            <version>${drift.version}</version>
         </dependency>
     </dependencies>
 

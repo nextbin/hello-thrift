@@ -1,7 +1,7 @@
 package com.nextbin.hello.thrift.inf.exception;
 
-import com.facebook.swift.codec.ThriftStruct;
-import com.facebook.swift.service.ThriftException;
+
+import io.airlift.drift.annotations.ThriftStruct;
 
 /**
  * @author zebin

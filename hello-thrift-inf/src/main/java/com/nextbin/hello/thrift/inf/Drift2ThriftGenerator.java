@@ -1,22 +1,25 @@
 package com.nextbin.hello.thrift.inf;
 
-import com.facebook.swift.generator.swift2thrift.Main;
-import com.facebook.swift.service.ThriftService;
+import io.airlift.drift.annotations.ThriftService;
+import io.airlift.drift.idl.generator.ThriftIdlGenerator;
+import io.airlift.drift.idl.generator.ThriftIdlGeneratorConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zebin
  * @since 2018-12-02.
  */
 @Slf4j
-public class Swift2ThriftGenerator {
-    public static final String PACKAGE_NAME = "com.nextbin.hello.thrift.inf";
+public class Drift2ThriftGenerator {
+    public static final String PACKAGE_NAME = "com.nextbin.hello.thrift";
     public static final String OUT_FILE = "hello-thrift-inf/src/main/resources/thrift/NextbinHelloService.thrift";
 
     /**
@@ -26,27 +29,26 @@ public class Swift2ThriftGenerator {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        //1.设置参数
-        List<String> list = new LinkedList<>();
-        list.add("-package");
-        list.add(PACKAGE_NAME);
-        list.add("-namespace");
-        list.add("java");
-        list.add(PACKAGE_NAME);
-        list.add("-namespace");
-        list.add("py");
-        list.add("nextbin.hello");
-        list.add("-out");
-        list.add(OUT_FILE);
-        list.add("-recursive");
-        //2.获取所有服务类
-        list.addAll(getThriftServices());
-        //3.生成thrift文件
-        Main.main(list.toArray(new String[]{}));
+        Map<String, String> namespaces = new HashMap<>();
+        namespaces.put("java", PACKAGE_NAME);
+        namespaces.put("py", "nextbin.hello");
+        ThriftIdlGeneratorConfig config = ThriftIdlGeneratorConfig.builder()
+                .defaultPackage(PACKAGE_NAME).namespaces(namespaces).recursive(true).build();
+        ThriftIdlGenerator generator = new ThriftIdlGenerator(config);
+        String text = generator.generate(getThriftServices());
+        try (PrintWriter writer = new PrintWriter(new File(OUT_FILE))) {
+            writer.write(text);
+        }
     }
 
     private static List<String> getThriftServices() throws ClassNotFoundException {
         List<String> ret = new ArrayList<>();
+        getThriftServiceClass().forEach(c -> ret.add(c.getName()));
+        return ret;
+    }
+
+    public static List<Class> getThriftServiceClass() throws ClassNotFoundException {
+        List<Class> ret = new ArrayList<>();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         String packagePath = PACKAGE_NAME.replace(".", File.separator);
         URL url = loader.getResource(packagePath);
@@ -57,8 +59,17 @@ public class Swift2ThriftGenerator {
                 for (Class c : classes) {
                     if (c.getAnnotation(ThriftService.class) != null) {
                         log.info("add service: {}", c.getName());
-                        ret.add(c.getName());
+                        ret.add(c);
+                        continue;
                     }
+                    for (Class inf : c.getInterfaces()) {
+                        if (inf.getAnnotation(ThriftService.class) != null) {
+                            log.info("add service: {}", c.getName());
+                            ret.add(c);
+                            break;
+                        }
+                    }
+                    // todo 递归
                 }
             }
         } else {

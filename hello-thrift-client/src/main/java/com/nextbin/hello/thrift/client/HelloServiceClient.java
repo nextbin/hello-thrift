@@ -1,18 +1,19 @@
 package com.nextbin.hello.thrift.client;
 
-import com.facebook.nifty.client.FramedClientChannel;
-import com.facebook.nifty.client.FramedClientConnector;
-import com.facebook.swift.service.RuntimeTTransportException;
-import com.facebook.swift.service.ThriftClientManager;
-import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.net.HostAndPort;
 import com.nextbin.hello.thrift.inf.service.HelloService;
+import io.airlift.drift.client.DriftClientFactory;
+import io.airlift.drift.client.ExceptionClassifier;
+import io.airlift.drift.client.address.SimpleAddressSelector;
+import io.airlift.drift.client.address.SimpleAddressSelectorConfig;
+import io.airlift.drift.codec.ThriftCodecManager;
+import io.airlift.drift.transport.netty.client.DriftNettyClientConfig;
+import io.airlift.drift.transport.netty.client.DriftNettyMethodInvokerFactory;
 import lombok.extern.slf4j.Slf4j;
 
-import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
+
+import static io.airlift.drift.transport.netty.client.DriftNettyMethodInvokerFactory.createStaticDriftNettyMethodInvokerFactory;
 
 
 /**
@@ -21,50 +22,24 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class HelloServiceClient {
-    private static final ThriftClientManager THRIFT_CLIENT_MANAGER = new ThriftClientManager();
-    private static final ThreadLocal<Map<InetSocketAddress, FramedClientChannel>> SYNC_CHANNEL = new ThreadLocal<>();
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        SYNC_CHANNEL.set(new HashMap<>());
-        HelloService helloService = getService();
-        log.info(helloService.hello());
-        log.info("users: {}", helloService.getUsers(1, 1));
-        for (int i = 0; i < 100; ++i) {
-            try {
-                getService().hello();
-            } catch (RuntimeTTransportException e) {
-                log.error(e.getMessage(), e);
-                InetSocketAddress address = getServerAddress();
-                if (!SYNC_CHANNEL.get().get(address).getNettyChannel().isConnected()) {
-                    SYNC_CHANNEL.get().get(address).getNettyChannel().disconnect();
-                    SYNC_CHANNEL.get().remove(address);
-                }
-            }
-            log.info(i + "");
-            TimeUnit.SECONDS.sleep(5);
+    public static void main(String[] args) {
+        try (DriftNettyMethodInvokerFactory<?> invokerFactory = createStaticDriftNettyMethodInvokerFactory(new DriftNettyClientConfig())) {
+            DriftClientFactory clientFactory = createClientFactory(12345, invokerFactory);
+            HelloService service1 = clientFactory.createDriftClient(HelloService.class).get();
+            log.info("hello: {}", service1.hello());
+            log.info("getUsers: {}", service1.getUsers(1, 10));
         }
-        TimeUnit.MINUTES.sleep(60);
-//        int total = 100000;
-//        Long start = System.currentTimeMillis();
-//        for (int i = 0; i < total; i++) {
-//            getService().hello();
-//        }
-//        long end = System.currentTimeMillis();
-//        long cost = end - start;
-//        int perform = (int) (total / (cost / 1000D));
-//        log.info("thrift " + total + " 次RPC调用，耗时：" + cost + "毫秒，平均" + perform + "次/秒");
     }
 
-    private static InetSocketAddress getServerAddress() {
-        return new InetSocketAddress("localhost", 12345);
+    public static DriftClientFactory createClientFactory(int port, DriftNettyMethodInvokerFactory<?> invokerFactory) {
+        SimpleAddressSelectorConfig config = new SimpleAddressSelectorConfig();
+        config.setAddressesList(Collections.singletonList(HostAndPort.fromParts("localhost", port)));
+        return new DriftClientFactory(
+                new ThriftCodecManager(),
+                invokerFactory,
+                new SimpleAddressSelector(config),
+                ExceptionClassifier.NORMAL_RESULT);
     }
 
-    private static HelloService getService() throws ExecutionException, InterruptedException {
-        InetSocketAddress address = getServerAddress();
-        if (SYNC_CHANNEL.get().get(address) == null) {
-            ListenableFuture<FramedClientChannel> channel = THRIFT_CLIENT_MANAGER.createChannel(new FramedClientConnector(address));
-            SYNC_CHANNEL.get().put(address, channel.get());
-        }
-        return THRIFT_CLIENT_MANAGER.createClient(SYNC_CHANNEL.get().get(address), HelloService.class);
-    }
 }

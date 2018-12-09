@@ -2,6 +2,10 @@
 
 从零开始，学习Thrift，并做一些简单的实现
 
+## 关于分支
+
+由于facebook开发的swift项目（不是Apple开发的swift编程语言）已经[停止维护](https://github.com/facebookarchive/swift)，所以基于facebook swift项目做的Java Thrift开发可以参考分支 [dev/facebook-swift](https://github.com/nextbin/hello-thrift/tree/dev/facebook-swift) 。master分支将根据由airlift维护的drift项目进行更深入的Thrift RPC使用。
+
 ## 项目结构
 
 1. hello-thrift-inf：接口定义和基本实体
@@ -38,7 +42,7 @@
 
 参见：
 
-1. com.nextbin.hello.thrift.inf.Swift2ThriftGenerator#main
+1. com.nextbin.hello.thrift.inf.Drift2ThriftGenerator#main
 2. https://blog.csdn.net/qq_25788637/article/details/79503964
 
 注意事项：

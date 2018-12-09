@@ -1,78 +1,39 @@
 package com.nextbin.hello.thrift.impl;
 
-import com.facebook.nifty.core.NettyServerConfig;
-import com.facebook.nifty.core.ThriftServerDef;
-import com.facebook.swift.codec.ThriftCodecManager;
-import com.facebook.swift.service.ThriftEventHandler;
-import com.facebook.swift.service.ThriftServer;
-import com.facebook.swift.service.ThriftServiceProcessor;
-import com.google.common.collect.ImmutableList;
-import com.nextbin.hello.thrift.impl.service.impl.HelloServiceImpl;
+import com.google.common.collect.ImmutableSet;
+import com.nextbin.hello.thrift.inf.Drift2ThriftGenerator;
+import io.airlift.drift.codec.ThriftCodecManager;
+import io.airlift.drift.server.DriftServer;
+import io.airlift.drift.server.DriftService;
+import io.airlift.drift.server.stats.NullMethodInvocationStatsFactory;
+import io.airlift.drift.transport.netty.server.DriftNettyServerConfig;
+import io.airlift.drift.transport.netty.server.DriftNettyServerTransportFactory;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.concurrent.ExecutorService;
-
-import static java.util.concurrent.Executors.newCachedThreadPool;
-import static java.util.concurrent.Executors.newFixedThreadPool;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author zebin
  * @since 2018-10-01.
  */
+@Slf4j
 public class Server {
-    private ExecutorService taskWorkerExecutor;
-    private ThriftServer server;
-    private ExecutorService bossExecutor;
-    private ExecutorService ioWorkerExecutor;
 
-    public ThriftServer getServer() {
-        return server;
-    }
-
-    public Server invoke() {
-        ThriftServiceProcessor processor = new ThriftServiceProcessor(
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+        DriftNettyServerConfig config = new DriftNettyServerConfig();
+        config.setPort(12345);
+        Set<DriftService> services = new HashSet<>();
+        for (Class clazz : Drift2ThriftGenerator.getThriftServiceClass()) {
+            services.add(new DriftService(clazz.newInstance()));
+        }
+        DriftServer server = new DriftServer(
+                new DriftNettyServerTransportFactory(config),
                 new ThriftCodecManager(),
-                ImmutableList.<ThriftEventHandler>of(),
-                new HelloServiceImpl()
-        );
-
-        taskWorkerExecutor = newFixedThreadPool(1);
-
-        ThriftServerDef serverDef = ThriftServerDef.newBuilder()
-                .listen(12345)
-                .withProcessor(processor)
-                .using(taskWorkerExecutor)
-                .build();
-
-        bossExecutor = newCachedThreadPool();
-        ioWorkerExecutor = newCachedThreadPool();
-
-        NettyServerConfig serverConfig = NettyServerConfig.newBuilder()
-                .setBossThreadExecutor(bossExecutor)
-                .setWorkerThreadExecutor(ioWorkerExecutor)
-                .build();
-
-        server = new ThriftServer(serverConfig, serverDef);
-        return this;
-    }
-
-    public void checkExecutorsTerminated() {
-//        Assert.assertTrue(bossExecutor.isTerminated());
-//        Assert.assertTrue(ioWorkerExecutor.isTerminated());
-//        Assert.assertTrue(taskWorkerExecutor.isTerminated());
-    }
-
-    public void stop() {
-        server.close();
-    }
-
-    public static void main(String[] args) {
-        Server serverCreator = new Server().invoke();
-        ThriftServer server = serverCreator.getServer();
-
+                new NullMethodInvocationStatsFactory(),
+                services,
+                ImmutableSet.of());
         server.start();
         System.out.println("服务已启动!");
-
-        //serverCreator.stop();
-        //serverCreator.checkExecutorsTerminated();
     }
 }

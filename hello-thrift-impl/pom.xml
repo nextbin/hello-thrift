@@ -39,6 +39,16 @@
             <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.airlift.drift</groupId>
+            <artifactId>drift-server</artifactId>
+            <version>${drift.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.airlift.drift</groupId>
+            <artifactId>drift-transport-netty</artifactId>
+            <version>${drift.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
