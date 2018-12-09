@@ -1,11 +1,11 @@
-#hello-thrift-client2
+# hello-thrift-client2
 
 客户端样例2（不使用Maven依赖接口模块hello-thrift-inf），样例编程语言：
 
 - Java
 - Python
 
-##Maven libthrift依赖
+## Maven libthrift依赖
 
 由于本机安装的thrift版本为0.11.0，命令行查看版本
 
