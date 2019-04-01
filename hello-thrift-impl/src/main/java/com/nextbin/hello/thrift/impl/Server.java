@@ -66,6 +66,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
+        System.out.println("start");
         Server serverCreator = new Server().invoke();
         ThriftServer server = serverCreator.getServer();
 
